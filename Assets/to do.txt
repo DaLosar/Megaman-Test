@@ -1,0 +1,13 @@
+to do:
+
+- consertar: se você tenta girar nos primeiros frames do pulo o megaman só gira quando a animação acaba. S: preciso criar transições mais complexas para manter o sprite na animação espelhada
+- consertar: megaman a esquerda das plataformas muito antes do que deveria. cai da direita um pouco depois do que deveria. preciso utilizar multiplos raycast para baixo para conseguir fazer isso
+- consertar: implementar a camera direito
+
+- adicionar: wall slide
+- adicionar: wall jump
+- adicionar: animacoes do dash (incluindo as sombras)
+- adicionar: dash
+- adicionar: dash jump
+- adicionar: animacoes do tiro
+- adicionar: tiro parado, tiro andando, tiro com dash, tiro pulando, tiro pulando com dash, etc
