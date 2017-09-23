@@ -17,8 +17,8 @@ public class Movement : MonoBehaviour {
     public float fallDownMaxSpeed = 0;
     public float fallDownAcceleration = 0;
     public Vector2 teste;
-    private bool isSlidingLeft = false;
-    private bool isSlidingRight = false;
+    private bool isSliding = false;
+    public float slideSpeed = 0;
 
     // Use this for initialization
     void Start () {
@@ -40,22 +40,41 @@ public class Movement : MonoBehaviour {
         bool shouldBePulledDownMiddle = hitDownMiddle.transform == null || hitDownMiddle.distance > 0.0f;
         bool shouldBePulledDownRight = hitDownRight.transform == null || hitDownRight.distance > 0.0f;
 
+        bool shouldBePulledDown = shouldBePulledDownLeft && shouldBePulledDownMiddle && shouldBePulledDownRight;
+
         RaycastHit2D hitRightTop = Physics2D.Raycast(new Vector2(transform.position.x + 1.121f, transform.position.y + 1.84f), Vector2.right);
         RaycastHit2D hitRightMiddle = Physics2D.Raycast(new Vector2(transform.position.x + 1.121f, transform.position.y + 0.92f), Vector2.right);
         RaycastHit2D hitRightBottom = Physics2D.Raycast(new Vector2(transform.position.x + 1.121f, transform.position.y + 0.00f), Vector2.right);
+
+        BoxCollider2D teste;
+        // teste.
+
+        bool hasObstacleRightTop = hitRightTop.distance < 0.2f;
+        bool hasObstacleRightMiddle = hitRightMiddle.distance < 0.2f;
+        bool hasObstacleRightBottom = hitRightBottom.distance < 0.2f;
+
+        Debug.Log(hitRightTop.distance);
+        Debug.Log(hitRightMiddle.distance);
+        Debug.Log(hitRightBottom.collider.name);
+        Debug.Log(hitRightTop.distance > 0);
+
+        bool hasObstacleRight = hasObstacleRightTop || hasObstacleRightMiddle || hasObstacleRightBottom;
+        bool canWalkRight = !hasObstacleRight || (hitRightBottom.transform == null && hitRightMiddle.transform == null && hitRightTop.transform == null);
 
         RaycastHit2D hitLeftTop = Physics2D.Raycast(new Vector2(transform.position.x + 0.279f, transform.position.y + 1.84f), Vector2.left);
         RaycastHit2D hitLeftMiddle = Physics2D.Raycast(new Vector2(transform.position.x + 0.279f, transform.position.y + 0.92f), Vector2.left);
         RaycastHit2D hitLeftBottom = Physics2D.Raycast(new Vector2(transform.position.x + 0.279f, transform.position.y + 0.00f), Vector2.left);
 
-        Debug.Log(hitLeftMiddle.distance);
+        bool canSlideRightWall = shouldBePulledDown && hasObstacleRight;
+
+        //Debug.Log(hitLeftMiddle.distance);
 
 
         //RaycastHit2D hitLeft = Physics2D.Raycast(new Vector2(transform.position.x - 1f, transform.position.y + 1.8f), Vector2.left);
         //Debug.Log(gameObject.transform.TransformVector(new Vector3(1, 1, 1)));
         //Debug.Log(gameObject.transform.InverseTransformVector(new Vector3(1, 1, 1)));
 
-        if (shouldBePulledDownLeft && shouldBePulledDownMiddle && shouldBePulledDownRight)
+        if (shouldBePulledDown)
         {
             float result = verticalSpeed + fallDownAcceleration;
             //Debug.Log(result);
@@ -74,34 +93,37 @@ public class Movement : MonoBehaviour {
         }
 
 
-        //RaycastHit2D teste = Physics2D.Raycast()
-        //Debug.Log("" + hitDown.collider.name);
-        //BoxCollider2D teste;
-        //teste.
-
         if (Input.GetAxis("Horizontal") > 0)
         {
-            if (hitRightBottom.transform == null || hitRightBottom.distance > 0.2f &&
-                hitRightMiddle.transform == null || hitRightMiddle.distance > 0.2f && 
-                hitRightTop.transform == null || hitRightTop.distance > 0.2f)
+            if (hitRightBottom.transform != null || hitRightMiddle.transform != null || hitRightTop.transform != null)
             {
-
-                if (framesAccelerating < 7)
+                if (hitRightBottom.distance > 0.2f || hitRightMiddle.distance > 0.2f || hitRightTop.distance > 0.2f)
                 {
-                    framesAccelerating++;
-                    horizontalSpeed = walkSpeed/2;
+                    if (framesAccelerating < 7)
+                    {
+                        framesAccelerating++;
+                        horizontalSpeed = walkSpeed / 2;
+                    }
+                    else
+                    {
+                        horizontalSpeed = walkSpeed;
+                    }
                 }
                 else
                 {
-                    horizontalSpeed = walkSpeed;
+                    if (hitDownLeft.distance > 0.0f && hitDownMiddle.distance > 0.0f && hitDownRight.distance > 0.0f) //tiver coisa para a direita e distancia do chao > 0, então ele deve escorregar pela parede
+                    {
+
+                    }
+                    horizontalSpeed = 0;
                 }
-                
                 //Debug.Log("horizontalspeed: " + horizontalSpeed);
                 //Debug.Log("distance: " + hitRight.distance);
             }
             else
             {
-                horizontalSpeed = 0;
+                
+
             }
             isFacingRight = true;
             //Debug.Log("distance: " + hitRight.distance);
