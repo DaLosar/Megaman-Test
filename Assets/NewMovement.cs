@@ -5,12 +5,15 @@ public class NewMovement : PhysicObject {
 
     public float maxSpeed = 7;
     public float jumpTakeoffSpeed = 7;
+    public GameObject myBusterShot;
 
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
-	// Use this for initialization
-	void Awake ()
+    int framesSinceLastShot = int.MaxValue;
+
+    // Use this for initialization
+    void Awake ()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = gameObject.GetComponentInChildren<Animator>();
@@ -40,7 +43,7 @@ public class NewMovement : PhysicObject {
                 animator.SetBool("isMoving", false);
             }
         } 
-        Debug.Log(move);
+        //Debug.Log(move);
 
         if(Input.GetButtonDown("Jump") && grounded)
         {
@@ -55,6 +58,23 @@ public class NewMovement : PhysicObject {
             
         }
 
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            animator.SetBool("isShooting", true);
+            if(true)
+            {
+                Debug.Log("shoot!");
+                Vector3 shootPosition = gameObject.GetComponent<Transform>().position + new Vector3(1f,1f);
+                GameObject.Instantiate(myBusterShot, shootPosition, Quaternion.identity);
+            }
+            framesSinceLastShot++;
+        }
+        else
+        {
+            animator.SetBool("isShooting", false);
+        }
+        
 
         animator.SetFloat("verticalSpeed", velocity.y);
         animator.SetFloat("horizontalSpeed", velocity.x);

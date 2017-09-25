@@ -6,6 +6,7 @@ public class PhysicObject : MonoBehaviour
 {
     public float gravityModifier = 1f;
     public float minGroundNormalY = 0.65f;
+    public bool canFly = false;
 
     protected Vector2 targetVelocity;
     protected bool grounded;
@@ -43,7 +44,7 @@ public class PhysicObject : MonoBehaviour
     protected virtual void ComputeVelocity()
     {
 
-    }
+    }   
 
     void FixedUpdate()
     {
@@ -83,8 +84,10 @@ public class PhysicObject : MonoBehaviour
             for (int i = 0; i < hitBufferList.Count; i++)
             {
                 Vector2 currentNormal = hitBufferList[i].normal;
+                Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(currentNormal.x, currentNormal.y));
+                Debug.Log(currentNormal);
 
-                if(currentNormal.y > minGroundNormalY)
+                if (currentNormal.y > minGroundNormalY)
                 {
                     grounded = true;
                     if(yMovement)
@@ -95,6 +98,7 @@ public class PhysicObject : MonoBehaviour
                 }
 
                 float projection = Vector2.Dot(velocity, currentNormal);
+
                 if(projection < 0)
                 {
                     velocity = velocity - projection * currentNormal;
@@ -104,7 +108,6 @@ public class PhysicObject : MonoBehaviour
                 distance = modifiedDistance < distance ? modifiedDistance : distance;
             }
         }
-
         rb2d.position = rb2d.position + move.normalized * distance;
     }
 }

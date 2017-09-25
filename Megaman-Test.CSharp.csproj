@@ -83,6 +83,7 @@
     <Compile Include="Assets\log.cs" />
     <Compile Include="Assets\NewMovement.cs" />
     <Compile Include="Assets\PhysicObject.cs" />
+    <Compile Include="Assets\PhysicsObject.cs" />
     <Compile Include="Assets\Scripts\AnimationTest.cs" />
     <Compile Include="Assets\Scripts\BeginFallingPivotCorrector.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />

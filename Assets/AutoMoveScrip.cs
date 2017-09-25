@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AutoMoveScrip : PhysicObject
 {
+    public Vector2 myVector;
 
 	// Use this for initialization
 	void Start () {
@@ -11,7 +12,8 @@ public class AutoMoveScrip : PhysicObject
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         targetVelocity = Vector2.left;
 	}
 }
